@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+    body{
+  font-family: arial;
+  font-size: 5px;
+  background: linear-gradient(to right bottom,#c34090, #5647bb);
+  color:#fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.container{
+    background-color: rgb(116, 36, 118) !important;
+    padding: 15px;
+    width: 800px;
+    box-shadow: 10px 10px 5px rgb(20, 28, 30);
+}
+
+h1{
+    font-size: 50px;
+    text-align: center;
+}
+
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* margin-left: 100px; */
+
+}
+
+.col{
+    width: 60%;
+}
+
+select,input{
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 20px;
+    padding: 8px 15px;
+    font-weight: 700;
+}
+
+button{
+    height: 50px;
+    width: 200px;
+    display: block;
+    padding: 10px;
+    margin: 0 auto;
+    border-radius: 50px;
+    background-color: #43317d;
+    color: #ffff;
+    border: 0;
+    cursor: pointer;
+    font-size: 22px;
+}
+.style{
+    display: flex;
+    margin: 20px;
+}
+</style>
+
+
+
+</head>
+
+<body>
+    <!-- HTML structure for the currency converter interface -->
+
+    <div class="container">
+        <h1>Currency Converter</h1>
+        <div style="display: flex;" >
+        <div class="row">
+            <div class="col" >
+                <label style=" font-size: 20px;" > From:</label><br>
+                <select class="currency" id="fromCurrency">
+                </select>
+                <input type="text" id="input_currency">
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col">
+                <label style=" font-size: 20px;" > To:</label><br>
+                <select class="currency" id="toCurrency">
+                </select>
+                <input type="text" id="output_currency">
+            </div>
+        </div>
+            <button onclick="convertCurrency()">Convert</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript code for currency conversion logic
+
+        // Get references to the necessary HTML elements
+        const selectFromCurrency = document.getElementById('fromCurrency');
+        const selectToCurrency = document.getElementById('toCurrency');
+        const inputAmount = document.getElementById('input_currency');
+        const outputAmount = document.getElementById('output_currency');
+
+        // URL for the currency exchange API
+        let currencyExchangeApi = 'http://data.fixer.io/api/latest?access_key=EMxtvD5alHx5NrMJrLnTR4bFgcDXEuRy';
+
+        // Function to fetch the latest exchange rates
+        async function fetchExchangeRates() {
+            const response = await fetch(currencyExchangeApi);
+            const data = await response.json();
+            return data.rates;
+        }
+
+        // Function to populate currency selectors with options
+        async function populateCurrencySelectors() {
+            const rates = await fetchExchangeRates();
+            
+            for (const currency in rates) {
+                const optionFrom = document.createElement('option');
+                optionFrom.value = currency;
+                optionFrom.textContent = currency;
+                selectFromCurrency.appendChild(optionFrom);
+
+                const optionTo = document.createElement('option');
+                optionTo.value = currency;
+                optionTo.textContent = currency;
+                selectToCurrency.appendChild(optionTo);
+            }
+        }
+
+        // Call the populateCurrencySelectors function to fill the dropdowns
+        populateCurrencySelectors();
+
+        // Function to handle currency conversion
+        async function convertCurrency() {
+            const rates = await fetchExchangeRates();
+
+            const fromCurrency = selectFromCurrency.value;
+            const toCurrency = selectToCurrency.value;
+            const amount = parseFloat(inputAmount.value);
+
+            if (!isNaN(amount) && rates[fromCurrency] && rates[toCurrency]) {
+                const convertedAmount = amount * (rates[toCurrency] / rates[fromCurrency]);
+                outputAmount.value = convertedAmount.toFixed(2);
+            } else {
+                outputAmount.value = 'Invalid input';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

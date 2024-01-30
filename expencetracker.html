@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<head>
+<style>
+    /* Styling for the entire page */
+    .stylebox {
+        border-radius: 25px;
+        background-color: rgb(116, 36, 118) !important;
+        padding: 15px;
+        width: 800px;
+        box-shadow: 10px 10px 5px rgb(20, 28, 30);
+        color: aliceblue;
+        margin: 80PX 90px 30PX 200PX;
+        text-align: center;
+    }
+
+    /* Styling for the table */
+    .table {
+        border-collapse: collapse;
+        width: 90%;
+        border: 1px solid white;
+        margin-left: 150px;
+    }
+
+    /* Styling for table headers and cells */
+    th, td {
+        color: aliceblue;
+        border: 1px solid white;
+        padding: 8px;
+        text-align: center;
+        counter-reset: white;
+    }
+
+    /* Styling for labels */
+    .label {
+        margin: 40px;
+    }
+
+    /* Styling for the total section */
+    .total {
+        margin-left: 250px;
+        width: 60px;
+    }
+    button{
+        width: 60PX;
+         height: 30PX;
+          background-color: rgb(191, 169, 234);
+
+    }
+    .divtable{
+        display: flex;
+    }
+</style>
+</head>
+<body>
+    <!-- Container for the expense tracker -->
+    <div class="stylebox">
+        <h1> Expense Tracker</h1>
+        <!-- Form for entering items and amounts -->
+        <form>
+            <!-- Label and input for items -->
+            <label class="label" for="ITEMS">ITEMS:</label>
+            <input type="text" id="ITEMS" required /><br><br>
+            <!-- Label and input for amounts -->
+            <label class="label" for="AMOUNT">AMOUNT:</label>
+            <input type="text" id="AMOUNT" required /><br><br>
+            <!-- Button to add expenses -->
+ <button type="button" id="addamount"  >add</button>
+        </form>
+        
+        <div class="divtable">
+            <!-- Table for displaying expenses -->
+            <div>
+                <table id="table" class="table">
+                    <tr>
+                        <th>ITEMS</th>
+                        <th>AMOUNT</th>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Total section -->
+            <div class="total" >
+                <table id="total">
+                    <tr>
+                        <th>TOTAL</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        // Get the "add" button element
+        let button = document.getElementById("addamount");
+
+        // Initialize the total amount
+        let totalamount = 0;
+
+        // Add a click event listener to the "add" button
+        button.addEventListener("click", function() {
+            let items, amount;
+
+            // Get the entered items and amount
+            items = document.getElementById("ITEMS").value;
+            amount = document.getElementById("AMOUNT").value;
+
+            // Check if items and amount are provided and amount is a valid number
+            if (items && !isNaN(amount)) {
+                // Get the expense table
+                let table = document.getElementById("table");
+
+                // Insert a new row into the table
+                let newRow = table.insertRow();
+                let itemCell = newRow.insertCell(0);
+                let amountCell = newRow.insertCell(1);
+
+                // Set the values for the new row
+                itemCell.innerHTML = items;
+                amountCell.innerHTML = parseFloat(amount).toFixed(2);
+
+                // Update the total amount
+                totalamount += parseFloat(amount);
+
+                // Get the total table
+                let tabletotal = document.getElementById("total");
+                let newRow1 = tabletotal.insertRow();//<tr>
+                let totalCell = newRow1.insertCell(0);//<td>
+
+                // Display the updated total amount
+                totalCell.innerHTML = totalamount.toFixed(2);
+
+
+                // Clear the input fields
+                document.getElementById("ITEMS").value = "";
+                document.getElementById("AMOUNT").value = "";
+
+                // Reset input field borders
+                let itemInput = document.getElementById("ITEMS");
+                let amountInput = document.getElementById("AMOUNT");
+                itemInput.style.border = "1px solid black";
+                amountInput.style.border = "1px solid black";
+            } else {            
+                // Highlight input fields with red borders if there are input errors
+                let itemInput = document.getElementById("ITEMS");
+                let amountInput = document.getElementById("AMOUNT");
+                itemInput.style.border = "1px solid red";
+                amountInput.style.border = "1px solid red";
+            }
+
+        }
+        );
+    </script>
+</body>
+</html>
+
+

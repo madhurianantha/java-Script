@@ -1,0 +1,142 @@
+<html>
+<head>
+<style>
+    body {
+        font-family: arial;
+        font-size: 5px;
+        background: linear-gradient(to right bottom, #e79ecb, #435218);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+    .container {
+        border-radius: 25px;
+        background-color: rgb(116, 36, 118) !important;
+        padding: 15px;
+        width: 800px;
+        box-shadow: 10px 10px 5px rgb(20, 28, 30);
+    }
+
+    p {
+        font-size: 20px;
+        text-align: center;
+    }
+    h1 {
+        font-size: 20px;
+        text-align: center;
+        color: #91cbf0;
+    }
+    button {
+        height: 40px;
+        width: 100px;
+    }
+</style>
+</head>
+
+<body>
+    <!-- The container div for styling -->
+<div class="container">
+    <h1> Countdown Timer</h1>
+    <!-- Display the current date and time -->
+    <p id="year"></p>
+     <!-- Display the countdown timer -->
+    <p id="countdowntime"></p>
+
+    <div style="text-align: center;">
+             <!-- Input fields for hours, minutes, and seconds -->
+        <input type="text" id="hours" placeholder="Hours" style="margin: 10px;" >
+        <input type="number"  id="minutes" placeholder="Minutes" style="margin: 10px;" >
+        <input type="number"  id="seconds" placeholder="Seconds" style="margin: 10px;" ><br>
+           <!-- Buttons for starting, stopping, and clearing the countdown -->
+        <button id="start" style="margin: 30px;" onclick="startCountdown()">Start</button>
+        <button id="stop" style="margin: 30px;" onclick="stopCountdown()">Stop</button>
+        <button id="clear" style="margin: 30px;" onclick="clearCountdown()">Clear</button>
+    </div>
+</div>
+<script>
+
+// Get the current date and time
+const date = new Date();
+
+// Display the current date and time in the 'year' element
+document.getElementById("year").innerHTML = date.toString();
+
+// Variables to store countdown date and interval
+let countDownDate;
+let interval;
+
+// Function to start the countdown
+function startCountdown() {
+    // Get user-entered values for hours, minutes, and seconds
+    // parseInt is used to convert the string values of input fields into integers.
+    const hoursInput = parseInt(document.getElementById("hours").value) || 0;
+    const minutesInput = parseInt(document.getElementById("minutes").value) || 0;
+    const secondsInput = parseInt(document.getElementById("seconds").value) || 0;
+
+    // Validate the input values
+    if (hoursInput >= 0 && hoursInput <= 24 && minutesInput >= 0 && minutesInput <= 60 && secondsInput >= 0 && secondsInput <= 60) {
+        // Calculate the total countdown time in milliseconds
+        let countdownTime = hoursInput * 3600000 + minutesInput * 60000 + secondsInput * 1000;
+console.log(countdownTime+" countdownTime ");
+        // if (countdownTime > 0) {
+            // Set the countDownDate to the current time plus the countdown time
+            countDownDate = new Date().getTime() + countdownTime;
+            console.log(countDownDate);
+      // The setInterval() method calls a function at specified intervals (in milliseconds).
+// The setInterval() method continues calling the function until clearInterval() is called, or the window is closed
+            interval = setInterval(updateCountdown, 1000);
+
+        // } else {
+        //     alert("Please enter a valid countdown time.");
+        // }
+    } else {
+        alert("Please enter valid values for hours, minutes, and seconds.");
+    }
+}
+// Function to update the countdown timer
+function updateCountdown() {
+    const now = new Date().getTime();
+    console.log(now +"update time");
+    const distance = countDownDate - now;
+    console.log(distance +" distance");
+    if (distance <= 0) {
+        clearInterval(interval);
+        // Display "Time's up!" when the countdown is finished
+        // document.getElementById("countdowntime").innerHTML = "Time's up!";
+    } else {
+        // Calculate hours, minutes, and seconds remaining
+        // calculates the number of milliseconds in an hour. There are 1000 milliseconds in a second,
+        //  60 seconds in a minute, and 60 minutes in an hour.
+  const hours = Math.floor(distance / (1000 * 60 * 60));       
+ const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));//how many minutes are in the remaining milliseconds.
+const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Display the remaining time in the 'countdowntime' element
+ document.getElementById("countdowntime").innerHTML = hours + "h " + ":" + minutes + "m " + ":" + seconds + "s ";
+    }
+}
+
+// Function to stop the countdown
+function stopCountdown() {
+    clearInterval(interval);
+    countDownDate = 0; // Reset the countdown date
+}
+
+// Function to clear the countdown
+function clearCountdown() {
+    clearInterval(interval);
+    countDownDate = 0; // Reset the countdown date
+    // Clear the displayed countdown time
+    document.getElementById("countdowntime").innerHTML = "";
+}
+
+// Add event listeners to the start, stop, and clear buttons
+document.getElementById("start").addEventListener("click", startCountdown);
+document.getElementById("stop").addEventListener("click", stopCountdown);
+document.getElementById("clear").addEventListener("click", clearCountdown);
+</script>
+</body>
+</html>

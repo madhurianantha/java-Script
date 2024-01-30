@@ -1,0 +1,113 @@
+
+<html>
+    <head>
+<style>
+       table{
+                border-collapse: collapse;
+                width: 100%;
+                border:1px solid black;
+            }
+            th,td{
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+        
+</style>
+
+
+    </head>
+    
+    <body>
+    
+    <form>
+    <label>name</label>
+    <input type="text" id="name" required /><br>
+    <label>age</label>
+    <input type="text" id="age" required /><br>
+    <label>mobile</label>
+    <input type="text" id="mobile" required /><br>
+        <label>aadhar</label>
+    <input type="text" id="aadhar" required /><br>
+    <label style="color: red; display: none;" id="errorText">please fill all the details</label>
+        
+    <button type="button" id="submitform">submit</button>
+</form>
+<table id="table">
+    <tr>
+        <th>NAME</th>
+        <th>AGE</th>
+        <th>MOBILE</th>
+        <th>AADHAR</th>
+        <th>NAME</th>
+    </tr>
+</table>
+       
+       
+       
+       <script>
+// form validations
+// // event listeners
+
+let button = document.getElementById("submitform");
+
+button.addEventListener("click", function() {
+    let name, age, aadhar, mobile;
+    name = document.getElementById("name").value;
+    age = document.getElementById("age").value;
+    mobile = document.getElementById("mobile").value;
+    aadhar = document.getElementById("aadhar").value;
+    
+       if(name && age && mobile && aadhar && name.length > 5 && age<100 && mobile.length==10 && aadhar.length == 12){
+   
+        let table = document.getElementById("table");
+        let newRow = table.insertRow();
+        let nameCell = newRow.insertCell(0);
+        let ageCell = newRow.insertCell(1);
+        let mobileCell = newRow.insertCell(2);
+        let aadharCell = newRow.insertCell(3);
+        let nameCell1 = newRow.insertCell(4);
+
+        nameCell.innerHTML = name;
+        ageCell.innerHTML = age;
+        mobileCell.innerHTML = mobile;
+        aadharCell.innerHTML = aadhar;
+        nameCell1.innerHTML = name;
+
+        document.getElementById("name").value = "";
+        document.getElementById("age").value = "";
+        document.getElementById("mobile").value = "";
+        document.getElementById("aadhar").value = "";
+
+        let errorText = document.getElementById("errorText");
+        let nameInput = document.getElementById("name");
+        let ageInput = document.getElementById("age");
+        let mobileInput = document.getElementById("mobile");
+        let aadharInput = document.getElementById("aadhar");
+        errorText.style.display = "none";
+        nameInput.style.border = "1px solid black";
+        ageInput.style.border = "1px solid black";
+        mobileInput.style.border = "1px solid black";
+        aadharInput.style.border = "1px solid black";
+    } else {
+        let errorText = document.getElementById("errorText");
+        let nameInput = document.getElementById("name");
+        let ageInput = document.getElementById("age");
+        let mobileInput = document.getElementById("mobile");
+        let aadharInput = document.getElementById("aadhar");
+        errorText.style.display = "flex";
+        nameInput.style.border = "2px solid red";
+        ageInput.style.border = "2px solid red";
+        mobileInput.style.border = "2px solid red";
+        aadharInput.style.border = "2px solid red";
+    }
+});
+
+
+
+
+
+
+        </script>
+    </body>
+    </html>

@@ -1,0 +1,55 @@
+<!-- HTML: Add buttons and images for each light bulb -->
+<div id="bulbStatus">Bulbs On: 0 | Bulbs Off: 4</div>
+
+<button onclick="toggleBulb(1)">Turn on the light1</button>
+<img src="https://www.citypng.com/public/uploads/preview/hd-light-bulb-on-off-png-31626305624ofqq78jchu.png" width="40" height="50">
+
+<button onclick="toggleBulb(2)">Turn on the light2</button>
+<img src="https://www.citypng.com/public/uploads/preview/hd-light-bulb-on-off-png-31626305624ofqq78jchu.png" width="40" height="50">
+
+<button onclick="toggleBulb(3)">Turn on the light3</button>
+<img src="https://www.citypng.com/public/uploads/preview/hd-light-bulb-on-off-png-31626305624ofqq78jchu.png" width="40" height="50">
+
+<button onclick="toggleBulb(4)">Turn on the light4</button>
+<img src="https://www.citypng.com/public/uploads/preview/hd-light-bulb-on-off-png-31626305624ofqq78jchu.png" width="40" height="50">
+
+<!-- JavaScript -->
+<script>
+    const bulbsState = [false, false, false, false]; // Represents the initial state of all bulbs
+
+    function updateBulbStatus() {
+        let bulbsOn = 0;
+        let bulbsOff = 0;
+
+        bulbsState.forEach((isOn) => {
+            if (isOn) {
+                bulbsOn++;
+            } else {
+                bulbsOff++;
+            }
+        });
+
+        const bulbStatus = document.getElementById('bulbStatus');
+        bulbStatus.textContent = `Bulbs On: ${bulbsOn} | Bulbs Off: ${bulbsOff}`;
+    }
+
+    function toggleBulb(bulbNumber) {
+        const bulbIndex = bulbNumber - 1;
+        bulbsState[bulbIndex] = !bulbsState[bulbIndex];
+
+        const bulbimg = document.getElementsByTagName("img")[bulbIndex];
+        const button = document.getElementsByTagName("button")[bulbIndex];
+
+        if (bulbsState[bulbIndex]) {
+            bulbimg.src = "https://toppng.com/uploads/preview/light-bulb-png-transparent-light-bulb-115628766421gdl0skp2k.png";
+            button.innerHTML = `Turn off the light${bulbNumber}`;
+        } else {
+            bulbimg.src = "https://www.citypng.com/public/uploads/preview/hd-light-bulb-on-off-png-31626305624ofqq78jchu.png";
+            button.innerHTML = `Turn on the light${bulbNumber}`;
+        }
+        updateBulbStatus();
+    }
+
+    // Calling the function once on page load to display the initial status
+    updateBulbStatus();
+</script>

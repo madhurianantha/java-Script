@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<head>
+<style>
+  body {
+    font-family: arial;
+    font-size: 5px;
+    background: linear-gradient(to right bottom, #e79ecb, #435218);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .container {
+    border-radius: 25px;
+    background-color: rgb(116, 36, 118) !important;
+    padding: 15px;
+    width: 800px;
+    box-shadow: 10px 10px 5px rgb(20, 28, 30);
+  }
+
+  p {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  button {
+    height: 40px;
+    width: 100px;
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <p id="year"></p>
+  <p id="countdowntime"></p>
+  <div style="text-align: center;">
+    <!-- Add input fields for hours, minutes, and seconds -->
+    <input type="number" id="hours" placeholder="Hours" style="margin: 10px;">
+    <input type="number" id="minutes" placeholder="Minutes" style="margin: 10px;">
+    <input type="number" id="seconds" placeholder="Seconds" style="margin: 10px;">
+    <button id="start" style="margin: 30px;" onclick="startCountdown()"> Start </button>
+    <button id="pause" style="margin: 30px;" onclick="pauseCountdown()"> Pause </button>
+    <button id="clear" style="margin: 30px;" onclick="clearCountdown()"> Clear </button>
+  </div>
+</div>
+<script>
+const date = new Date();
+document.getElementById("year").innerHTML = date.toString();
+
+let countDownDate;
+let interval;
+let paused = false; // Track whether the countdown is paused
+
+function startCountdown() {
+    if (paused) {
+        // If the countdown was paused, resume it
+        interval = setInterval(updatecountdown, 1000);
+        paused = false;
+    } else {
+        // Get the user-entered hours, minutes, and seconds
+        const hoursInput = parseInt(document.getElementById("hours").value) || 0;
+        const minutesInput = parseInt(document.getElementById("minutes").value) || 0;
+        const secondsInput = parseInt(document.getElementById("seconds").value) || 0;
+
+        // Calculate the total countdown time in milliseconds
+        const countdownTime = hoursInput * 3600000 + minutesInput * 60000 + secondsInput * 1000;
+
+        if (countdownTime > 0) {
+            // Set the countDownDate to the current time plus the countdown time
+            countDownDate = new Date().getTime() + countdownTime;
+            interval = setInterval(updatecountdown, 1000);
+        } else {
+            alert("Please enter a valid countdown time.");
+        }
+    }
+}
+
+function updatecountdown() {
+    const now = new Date().getTime();
+    const distance = countDownDate - now;
+
+    if (distance <= 0) {
+        clearInterval(interval);
+        document.getElementById("countdowntime").innerHTML = "Time's up!";
+    } else {
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("countdowntime").innerHTML =
+            hours + "h " + ":" + minutes + "m " + ":" + seconds + "s ";
+    }
+}
+
+function pauseCountdown() {
+    clearInterval(interval);
+    paused = true;
+}
+
+function clearCountdown() {
+    clearInterval(interval);
+    paused = false;
+    document.getElementById("countdowntime").innerHTML = " ";
+}
+
+document.getElementById("start").addEventListener("click", startCountdown);
+document.getElementById("pause").addEventListener("click", pauseCountdown);
+document.getElementById("clear").addEventListener("click", clearCountdown);
+</script>
+</body>
+</html>

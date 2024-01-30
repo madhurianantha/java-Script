@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    
+
+   
+</head>
+
+<body>
+    
+        <div class="container">
+            <h1>Currency Convertor</h1>
+            <div class="row">
+                <div class="col">
+                    <select class="currency" id="fromCurrency">
+                      
+                    </select>
+                    <input type="text" id="input_currency" name="">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <select class="currency" id="toCurrency" >
+                     
+                    </select>
+                    <input type="text" id="output_currency"  >
+                </div>
+                <button onclick="converter()">Convert</button>  
+            </div>
+<script>
+    const select = document.getElementById('fromCurrency');
+    const select1=document.getElementById("toCurrency");
+
+    const input = document.getElementById('input_currency');
+    let currencyExchangeApi=`http://data.fixer.io/api/latest?access_key=4e073b18b234915f35f5c3f72beef9a4`
+
+    async function currency(){
+        const res = await fetch(currencyExchangeApi);
+
+        // console.log(res)
+        const data = await res.json();
+        console.log(data)
+       
+        const arrkeys = Object.keys(data.rates);
+        const rates = data.rates;
+       console.log(rates)
+
+       //use dom to show in ui for from currecy
+
+     Object.keys(rates).forEach(displayDataFromCurrency)
+
+     function displayDataFromCurrency(currency){
+        console.log(currency)
+        let optionCreate=document.createElement("option")
+        optionCreate.value=currency
+        optionCreate.textContent=currency
+        select.appendChild(optionCreate)
+     } 
+
+     Object.keys(rates).forEach(displayDataToCurrency)
+
+    function displayDataToCurrency(currency){
+       console.log(currency)
+       let optionCreate=document.createElement("option")
+       optionCreate.value=currency
+       optionCreate.textContent=currency
+       select1.appendChild(optionCreate)
+     }
+    };
+
+    currency();
+
+    // function converter(){
+    //     console.log(select.value)
+    //     console.log(select1.value)
+    //     console.log(input.value)
+        function converter() {
+    const fromCurrency = select.value;
+    const toCurrency = select1.value;
+    const inputAmount = parseFloat(input.value);
+
+    const fromCurrencyRate = data.rates[fromCurrency];
+    const toCurrencyRate = data.rates[toCurrency];
+
+    if (!isNaN(inputAmount) && fromCurrencyRate && toCurrencyRate) {
+        const convertedAmount = inputAmount * (toCurrencyRate / fromCurrencyRate);
+        document.getElementById('output_currency').value = convertedAmount.toFixed(2);
+    }
+}
+
+
+    // }
+    console.log(converter());
+</script>
+
+    </body>
+    </html>
